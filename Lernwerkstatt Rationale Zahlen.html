@@ -1,0 +1,500 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Lernwerkstatt Rationale Zahlen</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Lexend:wght@500;600;700&display=swap">
+<style>
+/* Layout: Kapitel-Navigation links (ab 900px), rechts eine Lernspalte; mobil Chips oben. Minus = warm, Plus = grün, Bereiche wie auf der Checkliste. */
+:root{
+  --bg:#f4f7fb; --surface:#ffffff; --ink:#1b2433; --muted:#5a6577; --line:#d8dee8;
+  --neg:#c23b3b; --pos:#1d7a46; --btn:#22314d; --btn-ink:#ffffff; --focus:#2f6fdd;
+  --g:#0f7b6c; --r:#c2410c; --v:#6d28d9; --a:#1d7a46;
+  --font-head:"Lexend","Segoe UI",system-ui,sans-serif;
+  --font-body:"Atkinson Hyperlegible","Verdana",system-ui,sans-serif;
+  --radius:12px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10151d; --surface:#18202b; --ink:#e7ecf3; --muted:#a0abbd; --line:#2c3746;
+  --neg:#ff7b70; --pos:#55d08f; --btn:#d9e3f5; --btn-ink:#10151d; --focus:#8fb0ff;
+  --g:#3cc7b4; --r:#ff9a5c; --v:#b38dff; --a:#5fd38a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10151d; --surface:#18202b; --ink:#e7ecf3; --muted:#a0abbd; --line:#2c3746;
+  --neg:#ff7b70; --pos:#55d08f; --btn:#d9e3f5; --btn-ink:#10151d; --focus:#8fb0ff;
+  --g:#3cc7b4; --r:#ff9a5c; --v:#b38dff; --a:#5fd38a; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:17px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+h1,h2,h3{font-family:var(--font-head);line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(1.6rem,4vw,2.3rem)} h2{font-size:1.55rem} h3{font-size:1.15rem}
+p{margin:0}
+.num,.math{font-variant-numeric:tabular-nums}
+.math{font-family:var(--font-head);font-weight:600;white-space:nowrap}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:24px}
+header.top{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:16px}
+.eyebrow{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.sub{color:var(--muted)}
+.progress{min-width:min(320px,100%);display:grid;gap:6px}
+.bar{height:12px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--pos);width:0;transition:width .4s}
+.layout{display:grid;gap:24px;grid-template-columns:1fr}
+@media (min-width:900px){.layout{grid-template-columns:270px 1fr}}
+nav.side{display:none}
+@media (min-width:900px){nav.side{display:grid;gap:4px;align-content:start;position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px)}}
+.navgroup{font-size:.75rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:12px 0 2px}
+nav.side a,.chips a{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);padding:7px 10px;border-radius:10px;font-size:.95rem}
+nav.side a:hover,.chips a:hover{background:color-mix(in srgb,var(--ink) 7%,transparent)}
+nav.side a[aria-current="page"]{background:var(--surface);box-shadow:inset 0 0 0 2px var(--c,var(--line))}
+.nr{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-family:var(--font-head);font-weight:700;font-size:.85rem;color:#fff;background:var(--c)}
+.done-mark{margin-left:auto;color:var(--pos);font-weight:700}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px}
+@media (min-width:900px){.chips{display:none}}
+.chips a{flex:none;background:var(--surface);border:1px solid var(--line)}
+.chips a[aria-current="page"]{box-shadow:inset 0 0 0 2px var(--c,var(--line))}
+main{min-width:0;display:grid;gap:22px;align-content:start}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:grid;gap:14px;min-width:0}
+.chap-head{display:flex;gap:16px;align-items:center}
+.chap-head .nr{width:52px;height:52px;font-size:1.35rem}
+.goal{font-size:1.05rem}
+.merke{border-radius:var(--radius);padding:14px 16px;background:color-mix(in srgb,var(--c) 11%,var(--surface));border:1px solid color-mix(in srgb,var(--c) 35%,var(--surface))}
+.merke b:first-child{font-family:var(--font-head);color:var(--c)}
+ul.plain{margin:0;padding-left:1.2em;display:grid;gap:4px}
+.ex{border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:grid;gap:12px}
+.ex .task{font-size:1.25rem}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:8px;counter-reset:s}
+.steps li{display:flex;gap:10px;align-items:baseline;counter-increment:s;animation:pop .25s ease}
+.steps li::before{content:counter(s);flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:.8rem;font-weight:700;background:color-mix(in srgb,var(--c) 18%,var(--surface));color:var(--ink)}
+.steps li.final{font-weight:700;color:var(--pos)}
+@keyframes pop{from{opacity:.3;transform:translateY(-3px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.steps li{animation:none}.bar>i{transition:none}}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+button,.btn{font:inherit;font-weight:700;border:0;border-radius:10px;padding:10px 16px;cursor:pointer;background:var(--btn);color:var(--btn-ink)}
+button.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--line)}
+button.cmp{min-width:64px;font-size:1.3rem;font-family:var(--font-head)}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+button:disabled{opacity:.5;cursor:default}
+input.ans{font:inherit;font-size:1.2rem;font-family:var(--font-head);width:9em;max-width:100%;padding:9px 12px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink)}
+.practice{border:2px dashed color-mix(in srgb,var(--c) 45%,var(--line));border-radius:var(--radius);padding:18px;display:grid;gap:14px}
+.qtext{font-size:1.25rem}
+.fb{border-radius:10px;padding:12px 14px;display:grid;gap:8px}
+.fb.ok{background:color-mix(in srgb,var(--pos) 13%,var(--surface));border:1px solid color-mix(in srgb,var(--pos) 40%,var(--surface))}
+.fb.no{background:color-mix(in srgb,var(--neg) 11%,var(--surface));border:1px solid color-mix(in srgb,var(--neg) 40%,var(--surface))}
+.fb.tip{background:color-mix(in srgb,var(--c) 9%,var(--surface));border:1px solid var(--line)}
+.dots{display:flex;gap:6px;align-items:center}
+.dots i{width:16px;height:16px;border-radius:50%;background:var(--line);display:block}
+.dots i.on{background:var(--pos)}
+.say{border-left:0;border-radius:var(--radius);padding:14px 16px;background:var(--bg);border:1px solid var(--line)}
+.say .eyebrow{color:var(--c)}
+.say p.start{font-style:italic}
+svg.nl{width:100%;height:auto;display:block;max-width:680px}
+svg.nl .axis{stroke:var(--ink);stroke-width:2}
+svg.nl .tick{stroke:var(--ink);stroke-width:1.4}
+svg.nl .lbl{fill:var(--ink);font:600 13px var(--font-head)}
+svg.nl .zero{fill:var(--ink);font-weight:700}
+svg.nl .pt{fill:var(--c,var(--ink))}
+svg.nl .ptl{fill:var(--c,var(--ink));font:700 15px var(--font-head)}
+svg.nl .arr-pos{stroke:var(--pos);fill:none;stroke-width:3}
+svg.nl .arr-neg{stroke:var(--neg);fill:none;stroke-width:3}
+svg.nl .head-pos{fill:var(--pos)} svg.nl .head-neg{fill:var(--neg)}
+svg.nl .arrl{font:700 13px var(--font-head)}
+svg.nl .arrl.pos{fill:var(--pos)} svg.nl .arrl.neg{fill:var(--neg)}
+.cards{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.card{display:grid;gap:8px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;min-width:0}
+.card:hover{border-color:var(--c)}
+.card .top{display:flex;gap:10px;align-items:center}
+.card h3{font-size:1.02rem}
+.areahead{display:flex;align-items:center;gap:10px;font-family:var(--font-head);font-weight:600;font-size:1.1rem;margin-top:6px}
+.areahead::before{content:"";width:14px;height:14px;border-radius:4px;background:var(--c)}
+.how{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.how div{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px;display:grid;gap:4px}
+.how b{font-family:var(--font-head)}
+.pager{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.pager a{color:var(--ink);font-weight:700}
+.mc{display:grid;gap:8px}
+.mc label{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:10px;cursor:pointer}
+.mc input{margin-top:4px}
+.testlist{display:grid;gap:14px}
+.ttask{border:1px solid var(--line);border-radius:var(--radius);padding:14px;display:grid;gap:10px}
+.ttask.right{border-color:var(--pos)} .ttask.wrong{border-color:var(--neg)}
+.small{font-size:.9rem;color:var(--muted)}
+.hl{color:var(--c);font-weight:700}
+.neg{color:var(--neg)} .pos{color:var(--pos)}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div style="display:grid;gap:6px;min-width:0">
+      <span class="eyebrow">Mathematik Klasse 7 · Lernkontrolle am Dienstag, 17.11.2026</span>
+      <h1>Lernwerkstatt Rationale Zahlen</h1>
+      <p class="sub">Erklärungen, Beispiele Schritt für Schritt und Übungen mit sofortiger Kontrolle.</p>
+    </div>
+    <div class="progress" aria-live="polite">
+      <span class="small" id="progText">0 von 11 Kapiteln geschafft</span>
+      <div class="bar"><i id="progBar"></i></div>
+    </div>
+  </header>
+  <div class="chips" id="chips" aria-label="Kapitel"></div>
+  <div class="layout">
+    <nav class="side" id="side" aria-label="Kapitel"></nav>
+    <main id="main"></main>
+  </div>
+</div>
+
+<script>
+// ---------- Hilfen ----------
+const M = "−", X = "·";
+const ri = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const nz = (a, b) => { let v = 0; while (v === 0) v = ri(a, b); return v; };
+const round = n => Math.round(n * 1000) / 1000;
+function fmt(n) { n = round(n); let s = String(Math.abs(n)).replace(".", ","); return (n < 0 ? M : "") + s; }
+const p = n => (n < 0 ? "(" + fmt(n) + ")" : fmt(n));
+const m = s => `<span class="math">${s}</span>`;
+function parseAns(s) {
+  s = String(s).trim().replace(/[−–—]/g, "-").replace(/\s/g, "").replace(",", ".");
+  if (!/^[+-]?\d+(\.\d+)?$/.test(s)) return null;
+  return parseFloat(s);
+}
+const AREAS = { G: ["Grundlagen", "--g"], R: ["Rechnen", "--r"], V: ["Verbindung der Rechenarten", "--v"], A: ["Anwenden", "--a"] };
+
+// ---------- Zahlengerade (SVG) ----------
+function nl({ min, max, marks = [], arrows = [], half = false }) {
+  const W = 640, pad = 34, y = 70;
+  const x = v => pad + (v - min) * (W - 2 * pad) / (max - min);
+  const span = max - min, step = span <= 16 ? 1 : (span <= 40 ? 5 : 10);
+  let s = `<svg class="nl" viewBox="0 0 ${W} 110" role="img" aria-label="Zahlengerade">`;
+  s += `<line class="axis" x1="${pad - 14}" y1="${y}" x2="${W - pad + 16}" y2="${y}"/><polygon points="${W - pad + 22},${y} ${W - pad + 12},${y - 5} ${W - pad + 12},${y + 5}" fill="currentColor" style="fill:var(--ink)"/>`;
+  for (let v = Math.ceil(min); v <= max; v++) {
+    const big = v % step === 0 || v === 0;
+    s += `<line class="tick" x1="${x(v)}" y1="${y - (big ? 9 : 6)}" x2="${x(v)}" y2="${y + (big ? 9 : 6)}"/>`;
+    if (big) s += `<text class="lbl${v === 0 ? " zero" : ""}" x="${x(v)}" y="${y + 28}" text-anchor="middle">${fmt(v)}</text>`;
+    if (half && v < max) s += `<line class="tick" x1="${x(v + .5)}" y1="${y - 4}" x2="${x(v + .5)}" y2="${y + 4}"/>`;
+  }
+  arrows.forEach((a, i) => {
+    const x1 = x(a.from), x2 = x(a.to), cls = a.to >= a.from ? "pos" : "neg", yy = y - 22 - i * 22, dir = x2 > x1 ? -1 : 1;
+    s += `<line class="arr-${cls}" x1="${x1}" y1="${yy}" x2="${x2 + dir * 8}" y2="${yy}"/><polygon class="head-${cls}" points="${x2},${yy} ${x2 + dir * 10},${yy - 6} ${x2 + dir * 10},${yy + 6}"/>`;
+    s += `<line class="arr-${cls}" x1="${x1}" y1="${yy}" x2="${x1}" y2="${y}" stroke-dasharray="3 3" style="stroke-width:1.5"/><line class="arr-${cls}" x1="${x2}" y1="${yy}" x2="${x2}" y2="${y}" stroke-dasharray="3 3" style="stroke-width:1.5"/>`;
+    if (a.label) s += `<text class="arrl ${cls}" x="${(x1 + x2) / 2}" y="${yy - 7}" text-anchor="middle">${a.label}</text>`;
+  });
+  marks.forEach(mk => {
+    s += `<circle class="pt" cx="${x(mk.v)}" cy="${y}" r="7"/>`;
+    if (mk.label) s += `<text class="ptl" x="${x(mk.v)}" y="${y - 16}" text-anchor="middle">${mk.label}</text>`;
+  });
+  return s + "</svg>";
+}
+function moveLine(a, r, lbl) { const lo = Math.min(a, r, 0), hi = Math.max(a, r, 0); return nl({ min: Math.floor(lo) - 2, max: Math.ceil(hi) + 2, arrows: [{ from: a, to: r, label: lbl }], marks: [{ v: a }, { v: r }] }); }
+
+// ---------- Kapitel ----------
+const SAY = t => `<div class="say"><span class="eyebrow">Erklär es in deinem Heft</span><p>Schreibe einen Satz zu einer Übungsaufgabe. Diese Satzanfänge helfen dir:</p>${t.map(x => `<p class="start">„${x}“</p>`).join("")}</div>`;
+
+const CH = [
+ { id: 1, area: "G", title: "Zahlengerade", goal: "Ich kann Zahlen auf der Zahlengerade ablesen und eintragen.",
+   explain: `<p>Auf der Zahlengerade liegt die <b>0</b> in der Mitte. <b class="neg">Negative Zahlen</b> liegen links von 0. <b class="pos">Positive Zahlen</b> liegen rechts von 0.</p><p>Zwischen zwei ganzen Zahlen liegt genau in der Mitte die „Komma-5-Zahl“. Zwischen ${m("−3")} und ${m("−2")} liegt ${m("−2,5")}.</p>`,
+   merke: "Je weiter links, desto kleiner. Je weiter rechts, desto größer.",
+   examples: [
+     { task: `Welche Zahl ist markiert?`, pic: () => nl({ min: -6, max: 6, half: true, marks: [{ v: -2.5, label: "?" }] }),
+       steps: ["Suche zuerst die 0.", "Der Punkt liegt <b>links</b> von 0. Die Zahl ist also negativ.", `Er liegt zwischen ${m("−3")} und ${m("−2")}, genau in der Mitte.`, `Die Zahl ist ${m("−2,5")}.`] },
+     { task: `Welche Zahl liegt genau in der Mitte zwischen ${m("−3")} und ${m("1")}?`, pic: () => nl({ min: -5, max: 3, marks: [{ v: -3 }, { v: 1 }, { v: -1, label: "Mitte" }] }),
+       steps: [`Zähle den Abstand: Von ${m("−3")} bis ${m("1")} sind es 4 Schritte.`, "Die Hälfte von 4 ist 2.", `Gehe von ${m("−3")} aus 2 Schritte nach rechts.`, `Die Mitte ist ${m("−1")}.`] } ],
+   say: ["Die Zahl liegt links/rechts von 0, deshalb ist sie …", "Sie liegt zwischen ___ und ___, genau in der Mitte. Also ist es …"],
+   gen() {
+     if (Math.random() < .55) { const v = ri(-11, 11) / 2;
+       return { prompt: `Welche Zahl ist markiert?`, pic: nl({ min: -6, max: 6, half: true, marks: [{ v, label: "?" }] }), answer: v,
+         steps: ["Suche zuerst die 0.", v < 0 ? "Der Punkt liegt links von 0. Die Zahl ist negativ." : (v > 0 ? "Der Punkt liegt rechts von 0. Die Zahl ist positiv." : "Der Punkt liegt genau auf der 0."), Number.isInteger(v) ? `Er liegt genau auf einem großen Strich.` : `Er liegt genau in der Mitte zwischen ${m(fmt(Math.floor(v)))} und ${m(fmt(Math.ceil(v)))}.`, `Die Zahl ist ${m(fmt(v))}.`] }; }
+     const a = ri(-7, 3), d = ri(2, 7), b = a + d, mid = a + d / 2;
+     return { prompt: `Welche Zahl liegt genau in der Mitte zwischen ${m(fmt(a))} und ${m(fmt(b))}?`, answer: mid,
+       steps: [`Abstand von ${m(fmt(a))} bis ${m(fmt(b))}: ${d} Schritte.`, `Die Hälfte von ${d} ist ${fmt(d / 2)}.`, `Gehe von ${m(fmt(a))} aus ${fmt(d / 2)} Schritte nach rechts.`, `Die Mitte ist ${m(fmt(mid))}.`], pic2: nl({ min: a - 1, max: b + 1, half: true, marks: [{ v: a }, { v: b }, { v: mid, label: fmt(mid) }] }) };
+   } },
+ { id: 2, area: "G", title: "Vergleichen", goal: "Ich kann rationale Zahlen vergleichen (< und >).",
+   explain: `<p>Das Zeichen ${m("&lt;")} heißt „ist kleiner als“. Das Zeichen ${m("&gt;")} heißt „ist größer als“. Die Spitze zeigt immer auf die kleinere Zahl.</p><p>Bei negativen Zahlen ist es umgekehrt wie gewohnt: ${m("−8")} ist <b>kleiner</b> als ${m("−3")}, obwohl 8 größer ist als 3.</p>`,
+   merke: "Die Zahl, die weiter rechts auf der Zahlengerade liegt, ist größer. Bei Temperaturen: −8 °C ist kälter als −3 °C.",
+   examples: [
+     { task: `Vergleiche ${m("−8")} und ${m("−3")}.`, pic: () => nl({ min: -10, max: 2, marks: [{ v: -8, label: "−8" }, { v: -3, label: "−3" }] }),
+       steps: ["Stell dir beide Zahlen auf der Zahlengerade vor.", `${m("−3")} liegt weiter rechts als ${m("−8")}.`, `Also ist ${m("−3")} größer.`, `Ergebnis: ${m("−8 &lt; −3")}`] },
+     { task: `Vergleiche ${m("−2,3")} und ${m("−2,03")}.`,
+       steps: [`Hänge eine Null an, damit beide gleich viele Stellen haben: ${m("−2,30")} und ${m("−2,03")}.`, "Ohne Minus wäre 2,30 größer als 2,03.", `Mit Minus ist es umgekehrt: ${m("−2,30")} liegt weiter links.`, `Ergebnis: ${m("−2,3 &lt; −2,03")}`] } ],
+   say: ["___ ist kleiner als ___, weil ___ auf der Zahlengerade weiter links liegt.", "Bei Temperaturen bedeutet das: …"],
+   gen() {
+     let a, b; do { const d = Math.random() < .3; a = d ? ri(-20, 20) / 2 : ri(-15, 15); b = d ? ri(-20, 20) / 2 : ri(-15, 15); if (Math.random() < .25) b = -a; } while (a === b);
+     const ans = a < b ? "<" : ">"; const lo = Math.min(a, b), hi = Math.max(a, b);
+     return { type: "cmp", prompt: `Setze das richtige Zeichen ein: ${m(fmt(a) + " &nbsp;?&nbsp; " + fmt(b))}`, answer: ans,
+       steps: [`${m(fmt(hi))} liegt auf der Zahlengerade weiter rechts als ${m(fmt(lo))}.`, `Also ist ${m(fmt(hi))} größer.`, `Ergebnis: ${m(fmt(a) + (ans === "<" ? " &lt; " : " &gt; ") + fmt(b))}`],
+       pic2: Math.abs(a) <= 10 && Math.abs(b) <= 10 ? nl({ min: Math.floor(lo) - 1, max: Math.ceil(hi) + 1, marks: [{ v: a, label: fmt(a) }, { v: b, label: fmt(b) }] }) : "" };
+   } },
+ { id: 3, area: "G", title: "Betrag und Gegenzahl", goal: "Ich kann Betrag und Gegenzahl bestimmen.",
+   explain: `<p>Der <b>Betrag</b> ist der Abstand einer Zahl von der 0. Man schreibt ihn mit zwei Strichen: ${m("|−5| = 5")}. Ein Abstand ist nie negativ.</p><p>Die <b>Gegenzahl</b> hat den gleichen Abstand zur 0, liegt aber auf der anderen Seite. Die Gegenzahl von ${m("5")} ist ${m("−5")}. Die Gegenzahl von ${m("−5")} ist ${m("5")}.</p>`,
+   merke: "Betrag: Minus weglassen. Gegenzahl: Vorzeichen umdrehen.",
+   examples: [
+     { task: `Bestimme ${m("|−7|")}.`, pic: () => nl({ min: -9, max: 2, marks: [{ v: -7, label: "−7" }], arrows: [{ from: 0, to: -7, label: "7 Schritte" }] }),
+       steps: ["Betrag heißt: Wie weit ist die Zahl von 0 entfernt?", `${m("−7")} ist 7 Schritte von 0 entfernt.`, `${m("|−7| = 7")}`] },
+     { task: `Bestimme die Gegenzahl von ${m("−4")}.`, pic: () => nl({ min: -6, max: 6, marks: [{ v: -4, label: "−4" }, { v: 4, label: "4" }] }),
+       steps: [`${m("−4")} liegt 4 Schritte links von 0.`, "Die Gegenzahl liegt 4 Schritte rechts von 0.", `Die Gegenzahl von ${m("−4")} ist ${m("4")}.`] } ],
+   say: ["Der Betrag von ___ ist ___, weil die Zahl ___ Schritte von 0 entfernt ist.", "Die Gegenzahl von ___ ist ___, weil …"],
+   gen() {
+     const a = Math.random() < .25 ? nz(-30, 30) / 2 : nz(-25, 25);
+     if (Math.random() < .5) return { prompt: `Bestimme den Betrag: ${m("|" + fmt(a) + "|")} = ?`, answer: Math.abs(a), steps: [`${m(fmt(a))} ist ${fmt(Math.abs(a))} Schritte von 0 entfernt.`, `${m("|" + fmt(a) + "| = " + fmt(Math.abs(a)))}`] };
+     return { prompt: `Bestimme die Gegenzahl von ${m(fmt(a))}.`, answer: -a, steps: ["Gleicher Abstand zur 0, andere Seite: Das Vorzeichen dreht sich um.", `Die Gegenzahl von ${m(fmt(a))} ist ${m(fmt(-a))}.`] };
+   } },
+ { id: 4, area: "R", title: "Plus und Minus", goal: "Ich kann Plus und Minus mit rationalen Zahlen rechnen.",
+   explain: `<p>Stell dir die Zahlengerade vor. Du startest bei der ersten Zahl.</p><ul class="plain"><li><b class="pos">Plus</b>: Geh nach <b>rechts</b>.</li><li><b class="neg">Minus</b>: Geh nach <b>links</b>.</li></ul><p>Ohne Zahlengerade: Haben beide Zahlen das gleiche Vorzeichen, zählst du zusammen. Haben sie verschiedene Vorzeichen, rechnest du „groß minus klein“. Das Vorzeichen der Zahl mit dem größeren Betrag gewinnt.</p>`,
+   merke: "Plus → nach rechts. Minus → nach links. Denk an Geld: Minus-Zahlen sind Schulden.",
+   examples: [
+     { task: `${m("−3 + 8")}`, pic: () => moveLine(-3, 5, "+8"), steps: [`Start bei ${m("−3")}.`, "Plus 8: 8 Schritte nach rechts.", `Du landest bei ${m("5")}.`, `Kontrolle: Verschiedene Vorzeichen → 8 − 3 = 5. Die 8 ist größer, also positiv: ${m("5")}.`] },
+     { task: `${m("−4 − 6")}`, pic: () => moveLine(-4, -10, "−6"), steps: [`Start bei ${m("−4")}.`, "Minus 6: 6 Schritte nach links.", `Du landest bei ${m("−10")}.`, "Kontrolle mit Geld: 4 € Schulden und noch 6 € Schulden dazu sind 10 € Schulden."] },
+     { task: `${m("7 − 12")}`, pic: () => moveLine(7, -5, "−12"), steps: [`Start bei ${m("7")}.`, "Minus 12: 12 Schritte nach links. Nach 7 Schritten bist du bei 0.", "Du gehst noch 5 Schritte weiter nach links.", `Ergebnis: ${m("−5")}.`] } ],
+   say: ["Ich starte bei ___. Ich gehe ___ Schritte nach rechts/links. Ich lande bei ___.", "Mit Geld erklärt: …"],
+   gen() {
+     const a = ri(-20, 20), b = ri(1, 20), plus = Math.random() < .5, r = plus ? a + b : a - b;
+     return { prompt: `Berechne: ${m(fmt(a) + (plus ? " + " : " " + M + " ") + b)}`, answer: r,
+       steps: [`Start bei ${m(fmt(a))}.`, plus ? `Plus ${b}: ${b} Schritte nach rechts.` : `Minus ${b}: ${b} Schritte nach links.`, `Du landest bei ${m(fmt(r))}.`], pic2: moveLine(a, r, (plus ? "+" : M) + b) };
+   } },
+ { id: 5, area: "R", title: "Klammern weglassen", goal: "Ich kann Klammern weglassen (Klammerregel).",
+   explain: `<p>Steht eine negative Zahl in Klammern, schaust du auf die <b>zwei Zeichen</b> nebeneinander: das Rechenzeichen und das Vorzeichen in der Klammer.</p><ul class="plain"><li>Zwei <b>gleiche</b> Zeichen → <b class="pos">+</b> &nbsp; ${m("+ (+3) → + 3")} und ${m("− (−3) → + 3")}</li><li>Zwei <b>verschiedene</b> Zeichen → <b class="neg">−</b> &nbsp; ${m("+ (−3) → − 3")} und ${m("− (+3) → − 3")}</li></ul><p>Danach rechnest du wie in Kapitel 4.</p>`,
+   merke: "Schulden wegnehmen macht reicher: − (−3) wird + 3.",
+   examples: [
+     { task: `${m("5 − (−3)")}`, steps: ["Die Zeichen sind − und −. Sie sind gleich.", "Gleiche Zeichen → +.", `Aus ${m("5 − (−3)")} wird ${m("5 + 3")}.`, `Ergebnis: ${m("8")}.`] },
+     { task: `${m("−4 + (−6)")}`, steps: ["Die Zeichen sind + und −. Sie sind verschieden.", "Verschiedene Zeichen → −.", `Aus ${m("−4 + (−6)")} wird ${m("−4 − 6")}.`, `Ergebnis: ${m("−10")}.`] },
+     { task: `${m("−3 − (−8) + (−4)")}`, steps: [`${m("− (−8)")} wird ${m("+ 8")}.`, `${m("+ (−4)")} wird ${m("− 4")}.`, `Jetzt steht da: ${m("−3 + 8 − 4")}.`, `Von links nach rechts: ${m("−3 + 8 = 5")}, dann ${m("5 − 4 = 1")}.`] } ],
+   say: ["Die Zeichen ___ und ___ sind gleich/verschieden, also wird daraus ___.", "Dann rechne ich …"],
+   gen() {
+     const a = ri(-15, 15), b = ri(1, 15), op = pick(["+", M]), sg = pick(["+", M]);
+     const same = op === sg, nop = same ? "+" : M, r = same ? a + b : a - b;
+     return { prompt: `Berechne: ${m(fmt(a) + " " + op + " (" + sg + b + ")")}`, answer: r,
+       steps: [`Die Zeichen sind ${op} und ${sg}. Sie sind ${same ? "gleich" : "verschieden"}.`, `${same ? "Gleiche" : "Verschiedene"} Zeichen → ${nop}. Aus der Aufgabe wird ${m(fmt(a) + " " + nop + " " + b)}.`, `Start bei ${m(fmt(a))}, ${b} Schritte nach ${same ? "rechts" : "links"}.`, `Ergebnis: ${m(fmt(r))}.`] };
+   } },
+ { id: 6, area: "R", title: "Mal und Geteilt", goal: "Ich kann Mal und Geteilt mit der Vorzeichenregel rechnen.",
+   explain: `<p>Beim Malnehmen und Teilen brauchst du keine Zahlengerade. Du rechnest in <b>zwei Schritten</b>:</p><ul class="plain"><li><b>Schritt 1:</b> Vorzeichen bestimmen. Gleiche Vorzeichen → <b class="pos">+</b>. Verschiedene Vorzeichen → <b class="neg">−</b>.</li><li><b>Schritt 2:</b> Die Zahlen ohne Vorzeichen rechnen.</li></ul>`,
+   merke: `+ ${X} + = +   |   − ${X} − = +   |   + ${X} − = −   |   − ${X} + = −   (beim Teilen genauso)`,
+   examples: [
+     { task: `${m("(−7) " + X + " (−6)")}`, steps: ["Vorzeichen: − und −. Gleich → +.", `Ohne Vorzeichen: ${m("7 " + X + " 6 = 42")}.`, `Ergebnis: ${m("42")}.`] },
+     { task: `${m("(−56) : 7")}`, steps: ["Vorzeichen: − und +. Verschieden → −.", `Ohne Vorzeichen: ${m("56 : 7 = 8")}.`, `Ergebnis: ${m("−8")}.`] },
+     { task: `${m("(−1,5) " + X + " (−4)")}`, steps: ["Vorzeichen: − und −. Gleich → +.", `Ohne Vorzeichen: ${m("1,5 " + X + " 4 = 6")}.`, `Ergebnis: ${m("6")}.`] } ],
+   say: ["Die Vorzeichen sind gleich/verschieden, also ist das Ergebnis positiv/negativ.", "Dann rechne ich ___ und erhalte …"],
+   gen() {
+     const x = nz(-12, 12), y = nz(-12, 12), pr = x * y;
+     if (Math.random() < .5) return { prompt: `Berechne: ${m(p(x) + " " + X + " " + p(y))}`, answer: pr, steps: [`Vorzeichen: ${(x < 0) === (y < 0) ? "gleich → +" : "verschieden → −"}.`, `Ohne Vorzeichen: ${m(Math.abs(x) + " " + X + " " + Math.abs(y) + " = " + Math.abs(pr))}.`, `Ergebnis: ${m(fmt(pr))}.`] };
+     return { prompt: `Berechne: ${m(p(pr) + " : " + p(x))}`, answer: y, steps: [`Vorzeichen: ${(pr < 0) === (x < 0) ? "gleich → +" : "verschieden → −"}.`, `Ohne Vorzeichen: ${m(Math.abs(pr) + " : " + Math.abs(x) + " = " + Math.abs(y))}.`, `Ergebnis: ${m(fmt(y))}.`, `Probe: ${m(p(x) + " " + X + " " + p(y) + " = " + fmt(pr))} ✔`] };
+   } },
+ { id: 7, area: "R", title: "Drei und mehr Zahlen", goal: "Ich kann mit drei und mehr Zahlen malnehmen.",
+   explain: `<p>Bei mehreren Faktoren musst du nicht Schritt für Schritt die Vorzeichen bestimmen. Es gibt einen Trick: <b>Zähle die Minuszeichen.</b></p><ul class="plain"><li><b>Gerade</b> Anzahl (2, 4, 6 …) → Ergebnis <b class="pos">positiv</b></li><li><b>Ungerade</b> Anzahl (1, 3, 5 …) → Ergebnis <b class="neg">negativ</b></li></ul><p>Dann nimmst du die Zahlen ohne Vorzeichen mal.</p>`,
+   merke: "Minuszeichen zählen: gerade → +, ungerade → −.",
+   examples: [
+     { task: `${m("(−2) " + X + " (−3) " + X + " 4")}`, steps: ["Minuszeichen zählen: 2 Stück.", "2 ist gerade → Ergebnis positiv.", `Ohne Vorzeichen: ${m("2 " + X + " 3 " + X + " 4 = 24")}.`, `Ergebnis: ${m("24")}.`] },
+     { task: `${m("(−1) " + X + " 5 " + X + " (−2) " + X + " (−3)")}`, steps: ["Minuszeichen zählen: 3 Stück.", "3 ist ungerade → Ergebnis negativ.", `Ohne Vorzeichen: ${m("1 " + X + " 5 " + X + " 2 " + X + " 3 = 30")}.`, `Ergebnis: ${m("−30")}.`] } ],
+   say: ["Ich zähle ___ Minuszeichen. Das ist eine gerade/ungerade Anzahl, also ist das Ergebnis …"],
+   gen() {
+     const n = Math.random() < .6 ? 3 : 4, f = Array.from({ length: n }, () => nz(-5, 5)), neg = f.filter(v => v < 0).length, pr = f.reduce((a, b) => a * b, 1), ab = f.map(v => Math.abs(v));
+     return { prompt: `Berechne: ${m(f.map(p).join(" " + X + " "))}`, answer: pr,
+       steps: [`Minuszeichen zählen: ${neg} Stück.`, `${neg} ist ${neg % 2 ? "ungerade → Ergebnis negativ" : "gerade → Ergebnis positiv"}.`, `Ohne Vorzeichen: ${m(ab.join(" " + X + " ") + " = " + Math.abs(pr))}.`, `Ergebnis: ${m(fmt(pr))}.`] };
+   } },
+ { id: 8, area: "R", title: "Plus oder Mal?", goal: "Ich kann Plus und Mal unterscheiden.",
+   explain: `<p>Der häufigste Fehler: Man verwechselt die Regeln. „Minus mal Minus ist Plus“ gilt <b>nur beim Malrechnen</b>!</p><p>Frag dich bei jeder Aufgabe zuerst: <b>Welches Rechenzeichen steht zwischen den Zahlen?</b></p><ul class="plain"><li>Plus oder Minus → Zahlengerade (Kapitel 4 und 5)</li><li>Mal oder Geteilt → Vorzeichenregel (Kapitel 6 und 7)</li></ul>`,
+   merke: "Erst das Rechenzeichen anschauen, dann die passende Regel wählen.",
+   examples: [
+     { task: `${m("(−4) + (−5)")} und ${m("(−4) " + X + " (−5)")}`, steps: [`${m("(−4) + (−5)")} ist eine <b>Plus</b>-Aufgabe → Zahlengerade.`, `Von ${m("−4")} fünf Schritte nach links: ${m("−9")}.`, `${m("(−4) " + X + " (−5)")} ist eine <b>Mal</b>-Aufgabe → Vorzeichenregel.`, `Gleiche Vorzeichen → +. ${m("4 " + X + " 5 = 20")}. Ergebnis: ${m("20")}.`, "Gleiche Zahlen, andere Rechenart, ganz anderes Ergebnis!"] },
+     { task: `${m("(−6) + 3")} und ${m("(−6) " + X + " 3")}`, steps: [`Plus-Aufgabe: Von ${m("−6")} drei Schritte nach rechts: ${m("−3")}.`, `Mal-Aufgabe: Verschiedene Vorzeichen → −. ${m("6 " + X + " 3 = 18")}. Ergebnis: ${m("−18")}.`] } ],
+   say: ["Das ist eine Plus-Aufgabe/Mal-Aufgabe. Deshalb benutze ich …", "Bei Plus gilt …, bei Mal gilt …"],
+   gen() {
+     const a = ri(2, 9), b = ri(2, 9), k = pick(["++", "+.", "-+", "-.", ":", "+p"]);
+     if (k === "++") return { prompt: `Berechne: ${m("(" + M + a + ") + (" + M + b + ")")}`, answer: -a - b, steps: ["Das ist eine <b>Plus</b>-Aufgabe → Zahlengerade, nicht die Malregel!", `${m("+ (" + M + b + ")")} wird ${m(M + " " + b)}: ${m(M + a + " " + M + " " + b)}.`, `Von ${m(M + a)} ${b} Schritte nach links: ${m(fmt(-a - b))}.`] };
+     if (k === "+.") return { prompt: `Berechne: ${m("(" + M + a + ") " + X + " (" + M + b + ")")}`, answer: a * b, steps: ["Das ist eine <b>Mal</b>-Aufgabe → Vorzeichenregel.", "Gleiche Vorzeichen → +.", `${m(a + " " + X + " " + b + " = " + a * b)}. Ergebnis: ${m(fmt(a * b))}.`] };
+     if (k === "-+") return { prompt: `Berechne: ${m("(" + M + a + ") " + M + " (" + M + b + ")")}`, answer: -a + b, steps: ["Das ist eine <b>Minus</b>-Aufgabe → Klammerregel und Zahlengerade.", `${m(M + " (" + M + b + ")")} wird ${m("+ " + b)}: ${m(M + a + " + " + b)}.`, `Ergebnis: ${m(fmt(-a + b))}.`] };
+     if (k === "-.") return { prompt: `Berechne: ${m("(" + M + a + ") " + X + " " + b)}`, answer: -a * b, steps: ["Das ist eine <b>Mal</b>-Aufgabe → Vorzeichenregel.", "Verschiedene Vorzeichen → −.", `${m(a + " " + X + " " + b + " = " + a * b)}. Ergebnis: ${m(fmt(-a * b))}.`] };
+     if (k === ":") return { prompt: `Berechne: ${m("(" + M + a * b + ") : (" + M + b + ")")}`, answer: a, steps: ["Das ist eine <b>Geteilt</b>-Aufgabe → Vorzeichenregel.", "Gleiche Vorzeichen → +.", `${m(a * b + " : " + b + " = " + a)}. Ergebnis: ${m(fmt(a))}.`] };
+     return { prompt: `Berechne: ${m("(" + M + a + ") + " + b)}`, answer: -a + b, steps: ["Das ist eine <b>Plus</b>-Aufgabe → Zahlengerade.", `Von ${m(M + a)} ${b} Schritte nach rechts.`, `Ergebnis: ${m(fmt(-a + b))}.`] };
+   } },
+ { id: 9, area: "V", title: "Klammer – Punkt – Strich", goal: "Ich kann in der richtigen Reihenfolge rechnen.",
+   explain: `<p>In langen Aufgaben gilt eine feste Reihenfolge. Merkwort: <b>Kla – Pu – Stri</b>.</p><ul class="plain"><li><b>1. Klammern</b> zuerst</li><li><b>2. Punkt</b> (${X} und :) vor <b>Strich</b> (+ und −)</li><li><b>3.</b> Sonst von links nach rechts</li></ul><p>Methode: <b>Markieren</b>, was zuerst dran ist. Nur diesen Teil <b>rechnen</b>. Den Rest vollständig <b>abschreiben</b>.</p>`,
+   merke: "Kla – Pu – Stri. Die Vorzeichenregeln gelten weiter!",
+   examples: [
+     { task: `${m("−2 + 3 " + X + " (−4)")}`, steps: [`Markieren: Punkt vor Strich → ${m("3 " + X + " (−4)")} zuerst.`, `Rechnen: ${m("3 " + X + " (−4) = −12")}.`, `Abschreiben: ${m("−2 + (−12)")}.`, `Weiter: ${m("−2 − 12 = −14")}.`] },
+     { task: `${m("(−2 + 3) " + X + " (−4)")}`, steps: [`Markieren: Die Klammer ist zuerst dran.`, `Rechnen: ${m("−2 + 3 = 1")}.`, `Abschreiben: ${m("1 " + X + " (−4)")}.`, `Weiter: ${m("1 " + X + " (−4) = −4")}. Die Klammer ändert das Ergebnis!`] },
+     { task: `${m("−24 : (2 − 8) + 3 " + X + " (−1)")}`, steps: [`Klammer zuerst: ${m("2 − 8 = −6")}.`, `Abschreiben: ${m("−24 : (−6) + 3 " + X + " (−1)")}.`, `Punkt vor Strich: ${m("−24 : (−6) = 4")} und ${m("3 " + X + " (−1) = −3")}.`, `Abschreiben: ${m("4 + (−3)")}.`, `Weiter: ${m("4 − 3 = 1")}.`] } ],
+   say: ["Zuerst rechne ich ___, weil …", "Dann schreibe ich ab: … Zum Schluss rechne ich …"],
+   gen() {
+     const t = ri(1, 6), a = nz(-10, 10), b = nz(-6, 6), c = nz(-6, 6);
+     if (t === 1) { const pr = b * c, r = a + pr; return { prompt: `Berechne: ${m(fmt(a) + " + " + p(b) + " " + X + " " + p(c))}`, answer: r, steps: [`Punkt vor Strich: ${m(p(b) + " " + X + " " + p(c) + " = " + fmt(pr))}.`, `Abschreiben: ${m(fmt(a) + " + " + p(pr))}.`, `Ergebnis: ${m(fmt(r))}.`] }; }
+     if (t === 2) { const s = a + b, r = s * c; return { prompt: `Berechne: ${m("(" + fmt(a) + " + " + p(b) + ") " + X + " " + p(c))}`, answer: r, steps: [`Klammer zuerst: ${m(fmt(a) + " + " + p(b) + " = " + fmt(s))}.`, `Abschreiben: ${m(p(s) + " " + X + " " + p(c))}.`, `Ergebnis: ${m(fmt(r))}.`] }; }
+     if (t === 3) { const pr = b * c, r = a - pr; return { prompt: `Berechne: ${m(fmt(a) + " " + M + " " + p(b) + " " + X + " " + p(c))}`, answer: r, steps: [`Punkt vor Strich: ${m(p(b) + " " + X + " " + p(c) + " = " + fmt(pr))}.`, `Abschreiben: ${m(fmt(a) + " " + M + " " + p(pr))}.`, `Ergebnis: ${m(fmt(r))}.`] }; }
+     if (t === 4) { const d = b * c, r = c + a; return { prompt: `Berechne: ${m(p(d) + " : " + p(b) + " + " + p(a))}`, answer: r, steps: [`Punkt vor Strich: ${m(p(d) + " : " + p(b) + " = " + fmt(c))}.`, `Abschreiben: ${m(fmt(c) + " + " + p(a))}.`, `Ergebnis: ${m(fmt(r))}.`] }; }
+     if (t === 5) { const s = b - c, r = a * s; return { prompt: `Berechne: ${m(p(a) + " " + X + " (" + fmt(b) + " " + M + " " + p(c) + ")")}`, answer: r, steps: [`Klammer zuerst: ${m(fmt(b) + " " + M + " " + p(c) + " = " + fmt(s))}.`, `Abschreiben: ${m(p(a) + " " + X + " " + p(s))}.`, `Ergebnis: ${m(fmt(r))}.`] }; }
+     const p1 = a * b, p2 = c * 2, r = p1 + p2; return { prompt: `Berechne: ${m(p(a) + " " + X + " " + p(b) + " + " + p(c) + " " + X + " 2")}`, answer: r, steps: [`Beide Punkt-Rechnungen zuerst: ${m(p(a) + " " + X + " " + p(b) + " = " + fmt(p1))} und ${m(p(c) + " " + X + " 2 = " + fmt(p2))}.`, `Abschreiben: ${m(fmt(p1) + " + " + p(p2))}.`, `Ergebnis: ${m(fmt(r))}.`] };
+   } },
+ { id: 10, area: "A", title: "Sachaufgaben", goal: "Ich kann Sachaufgaben mit Temperatur und Geld lösen.",
+   explain: `<p>In Sachaufgaben steckt die Rechnung im Text. Übersetze zuerst:</p><ul class="plain"><li>wärmer, einzahlen, nach oben → <b class="pos">plus</b></li><li>kälter, abbuchen, ausgeben, nach unten → <b class="neg">minus</b></li><li>„Um wie viel …?“ (Unterschied) → größere Zahl <b>minus</b> kleinere Zahl</li><li>„dreimal je 20 €“ → <b>mal</b></li></ul><p>Schreibe immer: Rechnung, Ergebnis mit Einheit, Antwortsatz.</p>`,
+   merke: "Text übersetzen → Rechnung → Ergebnis mit Einheit → Antwortsatz.",
+   examples: [
+     { task: "Morgens sind es −8 °C, mittags 3 °C. Um wie viel Grad ist es wärmer geworden?", pic: () => moveLine(-8, 3, "11 Grad"), steps: ["Gesucht ist der Unterschied → mittags minus morgens.", `Rechnung: ${m("3 − (−8)")}.`, `Klammerregel: ${m("3 + 8 = 11")}.`, "Antwort: Es ist 11 Grad wärmer geworden."] },
+     { task: "Ein Konto hat 120 €. Es wird viermal je 35 € abgebucht. Wie hoch ist der Kontostand?", steps: [`Abbuchen heißt minus. Viermal je 35 € → ${m("4 " + X + " (−35) = −140")}.`, `Rechnung: ${m("120 + (−140)")}.`, `${m("120 − 140 = −20")}.`, "Antwort: Der Kontostand ist −20 €. Das sind 20 € Schulden."] } ],
+   say: ["Gesucht ist …", "Ich rechne …, weil im Text … steht.", "Antwort: …"],
+   gen() {
+     const t = ri(1, 5);
+     if (t === 1) { const a = ri(-12, -1), b = ri(1, 12); return { prompt: `Morgens sind es ${fmt(a)} °C, mittags ${b} °C. Um wie viel Grad ist es wärmer geworden?`, unit: "Grad", answer: b - a, steps: ["Unterschied → mittags minus morgens.", `Rechnung: ${m(b + " " + M + " " + p(a) + " = " + b + " + " + Math.abs(a) + " = " + (b - a))}.`, `Antwort: Es ist ${b - a} Grad wärmer geworden.`] }; }
+     if (t === 2) { const k = -5 * ri(2, 16), e = 5 * ri(4, 20), r = k + e; return { prompt: `Lenas Kontostand ist ${fmt(k)} €. Sie zahlt ${e} € ein. Wie hoch ist ihr Kontostand jetzt?`, unit: "€", answer: r, steps: ["Einzahlen heißt plus.", `Rechnung: ${m(fmt(k) + " + " + e + " = " + fmt(r))}.`, `Antwort: Ihr Kontostand ist ${fmt(r)} €.`] }; }
+     if (t === 3) { const k = 10 * ri(2, 15), n = ri(2, 5), b = 5 * ri(2, 8), r = k - n * b; return { prompt: `Ein Konto hat ${k} €. Es wird ${n}-mal je ${b} € abgebucht. Wie hoch ist der Kontostand?`, unit: "€", answer: r, steps: [`Abbuchen heißt minus: ${m(n + " " + X + " (" + M + b + ") = " + fmt(-n * b))}.`, `Rechnung: ${m(k + " + " + p(-n * b) + " = " + fmt(r))}.`, `Antwort: Der Kontostand ist ${fmt(r)} €.`] }; }
+     if (t === 4) { const a = ri(-30, -6), h = ri(2, 10), r = a + h; return { prompt: `Ein Taucher ist bei ${fmt(a)} m. Er taucht ${h} m nach oben. Wo ist er jetzt?`, unit: "m", answer: r, steps: ["Nach oben heißt plus.", `Rechnung: ${m(fmt(a) + " + " + h + " = " + fmt(r))}.`, `Antwort: Er ist jetzt bei ${fmt(r)} m.`] }; }
+     const a = ri(-4, 8), h = ri(2, 5), s = pick([1, 2, 3, 1.5]), r = a - h * s; return { prompt: `Es sind ${fmt(a)} °C. Die Temperatur sinkt ${h} Stunden lang jede Stunde um ${fmt(s)} Grad. Wie kalt ist es dann?`, unit: "°C", answer: r, steps: [`Sinken heißt minus: ${m(h + " " + X + " (" + M + fmt(s) + ") = " + fmt(-h * s))}.`, `Rechnung: ${m(fmt(a) + " + " + p(-h * s) + " = " + fmt(r))}.`, `Antwort: Es sind dann ${fmt(r)} °C.`] };
+   } },
+ { id: 11, area: "A", title: "Fehler finden", goal: "Ich kann Fehler finden und erklären.",
+   explain: `<p>Wenn du einen Fehler suchst, mach den <b>Fehler-Check</b> mit drei Fragen:</p><ul class="plain"><li><b>1.</b> Plus/Minus oder Mal/Geteilt? Wurde die richtige Regel benutzt?</li><li><b>2.</b> Minuszeichen gezählt? Stimmt das Vorzeichen?</li><li><b>3.</b> Stimmt die Reihenfolge (Kla – Pu – Stri)?</li></ul><p>Dann schreibst du, was falsch ist, und rechnest richtig.</p>`,
+   merke: "Fehler-Check: Regel – Vorzeichen – Reihenfolge.",
+   examples: [
+     { task: `Tim rechnet: ${m("(−6) " + X + " (−2) = −12")}`, steps: ["Fehler-Check 1: Das ist eine Mal-Aufgabe → Vorzeichenregel.", "Gleiche Vorzeichen → +. Das Ergebnis muss positiv sein.", `Richtig: ${m("12")}.`, "Satz: Der Fehler ist, dass Tim die Plus-Regel beim Malrechnen benutzt hat. Richtig ist 12, weil gleiche Vorzeichen plus ergeben."] },
+     { task: `Mia rechnet: ${m("10 − 2 " + X + " (−4) = 8 " + X + " (−4) = −32")}`, steps: ["Fehler-Check 3: Die Reihenfolge stimmt nicht. Mia hat zuerst Minus gerechnet.", `Punkt vor Strich: ${m("2 " + X + " (−4) = −8")}.`, `Dann: ${m("10 − (−8) = 10 + 8 = 18")}.`, "Satz: Der Fehler ist, dass Mia Strich vor Punkt gerechnet hat. Richtig ist 18, weil Punkt vor Strich gilt."] } ],
+   say: ["Der Fehler ist, dass …", "Richtig ist ___, weil …"],
+   gen() {
+     const a = ri(2, 9), b = ri(2, 9), c = ri(2, 9);
+     const R = { plusMal: "Beim Plus wurde die Malregel benutzt.", malPlus: "Beim Malrechnen wurde die Plus-Regel benutzt (gleiche Vorzeichen ergeben plus).", klam: "Die Klammerregel ist falsch: − (−b) wird + b.", reihen: "Es wurde Strich vor Punkt gerechnet.", zaehl: "Die Minuszeichen wurden falsch gezählt." };
+     const k = ri(1, 5); let o;
+     if (k === 1) o = { calc: `${m("(" + M + a + ") + (" + M + b + ") = " + (a + b))}`, ans: -(a + b), why: "plusMal", steps: ["Plus-Aufgabe → Zahlengerade.", `${m(M + a + " " + M + " " + b + " = " + fmt(-(a + b)))}.`] };
+     if (k === 2) o = { calc: `${m("(" + M + a + ") " + X + " (" + M + b + ") = " + fmt(-a * b))}`, ans: a * b, why: "malPlus", steps: ["Mal-Aufgabe, gleiche Vorzeichen → +.", `${m(a + " " + X + " " + b + " = " + a * b)}.`] };
+     if (k === 3) o = { calc: `${m(c + " " + M + " (" + M + b + ") = " + fmt(c - b))}`, ans: c + b, why: "klam", steps: [`${m(M + " (" + M + b + ")")} wird ${m("+ " + b)}.`, `${m(c + " + " + b + " = " + (c + b))}.`] };
+     if (k === 4) o = { calc: `${m(c + " + " + a + " " + X + " (" + M + b + ") = " + (c + a) + " " + X + " (" + M + b + ") = " + fmt(-(c + a) * b))}`, ans: c - a * b, why: "reihen", steps: [`Punkt vor Strich: ${m(a + " " + X + " (" + M + b + ") = " + fmt(-a * b))}.`, `${m(c + " + " + p(-a * b) + " = " + fmt(c - a * b))}.`] };
+     if (k === 5) o = { calc: `${m("(" + M + a + ") " + X + " (" + M + b + ") " + X + " (" + M + c + ") = " + a * b * c)}`, ans: -a * b * c, why: "zaehl", steps: ["3 Minuszeichen → ungerade → negativ.", `${m(a + " " + X + " " + b + " " + X + " " + c + " = " + a * b * c)}, also ${m(fmt(-a * b * c))}.`] };
+     const others = Object.keys(R).filter(x => x !== o.why).sort(() => Math.random() - .5).slice(0, 2);
+     const opts = [o.why, ...others].sort(() => Math.random() - .5).map(x => ({ key: x, text: R[x] }));
+     return { type: "err", prompt: `Finde den Fehler: ${o.calc}`, options: opts, why: o.why, answer: o.ans, steps: [`Der Fehler: ${R[o.why]}`, ...o.steps, `Richtig ist ${m(fmt(o.ans))}.`] };
+   } }
+];
+
+// ---------- Fortschritt (nur in diesem Browser) ----------
+let prog = {};
+try { prog = JSON.parse(localStorage.getItem("rz-prog") || "{}") || {}; } catch (e) { prog = {}; }
+const save = () => { try { localStorage.setItem("rz-prog", JSON.stringify(prog)); } catch (e) {} };
+const done = id => (prog[id] || 0) >= 5;
+function updateProgress() {
+  const n = CH.filter(c => done(c.id)).length;
+  document.getElementById("progText").textContent = `${n} von 11 Kapiteln geschafft`;
+  document.getElementById("progBar").style.width = (n / 11 * 100) + "%";
+  renderNav();
+}
+
+// ---------- Navigation ----------
+const cv = c => `var(${AREAS[c.area][1]})`;
+function renderNav() {
+  const cur = location.hash.replace("#", "") || "start";
+  let side = `<a href="#start" ${cur === "start" ? 'aria-current="page"' : ""} style="--c:var(--ink)"><span class="nr" style="--c:var(--btn);color:var(--btn-ink)">⌂</span>Übersicht</a>`;
+  let last = "";
+  CH.forEach(c => {
+    if (c.area !== last) { last = c.area; side += `<div class="navgroup">${AREAS[c.area][0]}</div>`; }
+    side += `<a href="#kapitel-${c.id}" style="--c:${cv(c)}" ${cur === "kapitel-" + c.id ? 'aria-current="page"' : ""}><span class="nr">${c.id}</span>${c.title}${done(c.id) ? '<span class="done-mark" aria-label="geschafft">✓</span>' : ""}</a>`;
+  });
+  side += `<div class="navgroup">Zum Schluss</div><a href="#probetest" ${cur === "probetest" ? 'aria-current="page"' : ""} style="--c:var(--ink)"><span class="nr" style="--c:var(--btn);color:var(--btn-ink)">✎</span>Probetest</a>`;
+  document.getElementById("side").innerHTML = side;
+  document.getElementById("chips").innerHTML = `<a href="#start" style="--c:var(--ink)" ${cur === "start" ? 'aria-current="page"' : ""}>Übersicht</a>` + CH.map(c => `<a href="#kapitel-${c.id}" style="--c:${cv(c)}" ${cur === "kapitel-" + c.id ? 'aria-current="page"' : ""}><span class="nr" style="width:22px;height:22px;font-size:.75rem">${c.id}</span>${c.title}${done(c.id) ? " ✓" : ""}</a>`).join("") + `<a href="#probetest" style="--c:var(--ink)" ${cur === "probetest" ? 'aria-current="page"' : ""}>Probetest</a>`;
+}
+
+// ---------- Startseite ----------
+function renderStart() {
+  let h = `<section class="panel"><h2>So lernst du hier</h2><div class="how">
+    <div><b>1. Checkliste nehmen</b><span>Die Kapitel haben die gleichen Nummern wie deine Checkliste. Starte bei 😐 oder 🙁.</span></div>
+    <div><b>2. Erklärung lesen</b><span>Lies den Merke-Kasten genau. Er ist die wichtigste Regel.</span></div>
+    <div><b>3. Beispiele durchklicken</b><span>Klick auf „Nächster Schritt“. Überlege vorher selbst, was als Nächstes kommt.</span></div>
+    <div><b>4. Üben</b><span>Bei 5 richtigen Aufgaben ist das Kapitel geschafft. Bei Fehlern siehst du den Lösungsweg.</span></div>
+  </div><p class="small">Dein Fortschritt wird nur in diesem Browser gespeichert.</p></section>`;
+  let last = "";
+  h += `<section class="panel"><h2>Die Kapitel</h2>`;
+  CH.forEach((c, i) => {
+    if (c.area !== last) { if (last) h += `</div>`; last = c.area; h += `<div class="areahead" style="--c:${cv(c)}">${AREAS[c.area][0]}</div><div class="cards">`; }
+    h += `<a class="card" href="#kapitel-${c.id}" style="--c:${cv(c)}"><div class="top"><span class="nr">${c.id}</span><h3>${c.title}</h3></div><span class="small">${c.goal}</span>${dots(c.id)}</a>`;
+  });
+  h += `</div></section><section class="panel"><h2>Probetest</h2><p>Du denkst, du kannst alles? Teste dich mit 11 gemischten Aufgaben. Danach siehst du, welche Kapitel du noch üben solltest.</p><div><a class="btn" href="#probetest" style="text-decoration:none;display:inline-block">Zum Probetest</a></div></section>`;
+  return h;
+}
+const dots = id => `<div class="dots" aria-label="${Math.min(prog[id] || 0, 5)} von 5 richtig">${[0, 1, 2, 3, 4].map(i => `<i class="${i < (prog[id] || 0) ? "on" : ""}"></i>`).join("")}${done(id) ? '<span class="small pos" style="margin-left:6px;font-weight:700">geschafft</span>' : ""}</div>`;
+
+// ---------- Kapitelseite ----------
+function renderChapter(c) {
+  const i = CH.indexOf(c);
+  let h = `<section class="panel" style="--c:${cv(c)}"><div class="chap-head"><span class="nr">${c.id}</span><div style="display:grid;gap:4px;min-width:0"><span class="eyebrow">${AREAS[c.area][0]} · Checkliste Nr. ${c.id}</span><h2>${c.title}</h2></div></div>
+    <p class="goal"><b>Das lernst du hier:</b> ${c.goal}</p>${c.explain}<div class="merke"><b>Merke:</b> ${c.merke}</div></section>`;
+  h += `<section class="panel" style="--c:${cv(c)}"><h2>Beispiele Schritt für Schritt</h2><p class="small">Überlege bei jedem Schritt zuerst selbst. Klick dann auf „Nächster Schritt“.</p>`;
+  c.examples.forEach((ex, j) => {
+    h += `<div class="ex" data-ex="${j}"><span class="eyebrow">Beispiel ${j + 1}</span><div class="task">${ex.task}</div>${ex.pic ? ex.pic() : ""}<ol class="steps"></ol><div class="row"><button type="button" class="next">Nächster Schritt</button><button type="button" class="ghost all">Alle Schritte zeigen</button></div></div>`;
+  });
+  h += `</section><section class="panel" style="--c:${cv(c)}"><div class="row" style="justify-content:space-between"><h2>Jetzt übst du</h2>${dots(c.id)}</div><div class="practice" id="practice"></div>${SAY(c.say)}</section>`;
+  h += `<div class="pager">${i > 0 ? `<a href="#kapitel-${CH[i - 1].id}">← ${CH[i - 1].id}. ${CH[i - 1].title}</a>` : `<a href="#start">← Übersicht</a>`}${i < CH.length - 1 ? `<a href="#kapitel-${CH[i + 1].id}">${CH[i + 1].id}. ${CH[i + 1].title} →</a>` : `<a href="#probetest">Zum Probetest →</a>`}</div>`;
+  const main = document.getElementById("main"); main.innerHTML = h;
+  main.querySelectorAll(".ex").forEach(el => {
+    const ex = c.examples[+el.dataset.ex], ol = el.querySelector(".steps"), nb = el.querySelector(".next"), ab = el.querySelector(".all");
+    let k = 0; const show = () => { const li = document.createElement("li"); li.innerHTML = ex.steps[k]; if (k === ex.steps.length - 1) li.className = "final"; ol.appendChild(li); k++; if (k >= ex.steps.length) { nb.disabled = true; ab.disabled = true; nb.textContent = "Fertig ✓"; } };
+    nb.onclick = show; ab.onclick = () => { while (k < ex.steps.length) show(); };
+  });
+  practice(c);
+}
+
+// ---------- Übungsaufgabe ----------
+function taskInput(t, uid) {
+  if (t.type === "cmp") return `<div class="row" role="group" aria-label="Zeichen wählen"><button type="button" class="cmp" data-v="<">&lt;</button><button type="button" class="cmp" data-v=">">&gt;</button></div>`;
+  let h = "";
+  if (t.type === "err") h += `<div class="mc" role="radiogroup" aria-label="Was ist der Fehler?"><b>1. Was ist der Fehler?</b>${t.options.map((o, i) => `<label><input type="radio" name="why-${uid}" value="${o.key}" id="why-${uid}-${i}"> <span>${o.text}</span></label>`).join("")}</div><b>2. Was ist richtig?</b>`;
+  return h + `<div class="row"><label for="ans-${uid}" class="small">Deine Antwort${t.unit ? " (in " + t.unit + ")" : ""}:</label><input class="ans" id="ans-${uid}" inputmode="text" autocomplete="off" placeholder="z. B. −5"></div>`;
+}
+function readAnswer(root, t, uid, val) {
+  if (t.type === "cmp") return { ok: val === t.answer, empty: !val };
+  const v = parseAns(root.querySelector("#ans-" + uid).value);
+  if (t.type === "err") { const r = root.querySelector(`input[name="why-${uid}"]:checked`); return { ok: v !== null && Math.abs(v - t.answer) < 1e-9 && r && r.value === t.why, empty: v === null || !r, bad: root.querySelector("#ans-" + uid).value.trim() !== "" && v === null }; }
+  return { ok: v !== null && Math.abs(v - t.answer) < 1e-9, empty: v === null, bad: root.querySelector("#ans-" + uid).value.trim() !== "" && v === null };
+}
+const solution = t => `<b>So geht’s:</b><ol class="steps">${t.steps.map((s, i) => `<li class="${i === t.steps.length - 1 ? "final" : ""}">${s}</li>`).join("")}</ol>${t.pic2 || ""}`;
+function practice(c) {
+  const box = document.getElementById("practice"); let t = c.gen(), tries = 0, cmpVal = null; const uid = "p" + c.id;
+  box.innerHTML = `<div class="qtext">${t.prompt}</div>${t.pic || ""}${taskInput(t, uid)}<div class="row"><button type="button" id="chk">Prüfen</button><button type="button" class="ghost" id="tip">Tipp</button><button type="button" class="ghost" id="new">Neue Aufgabe</button></div><div id="fb" aria-live="polite"></div>`;
+  const fb = box.querySelector("#fb"), chk = box.querySelector("#chk");
+  box.querySelectorAll(".cmp").forEach(b => b.onclick = () => { cmpVal = b.dataset.v; box.querySelectorAll(".cmp").forEach(x => x.style.boxShadow = ""); b.style.boxShadow = "0 0 0 3px var(--focus)"; });
+  const inp = box.querySelector(".ans"); if (inp) inp.addEventListener("keydown", e => { if (e.key === "Enter") chk.click(); });
+  box.querySelector("#tip").onclick = () => { fb.innerHTML = `<div class="fb tip"><b>Tipp:</b> ${t.steps[0]}</div>`; };
+  box.querySelector("#new").onclick = () => practice(c);
+  chk.onclick = () => {
+    const r = readAnswer(box, t, uid, cmpVal);
+    if (r.bad) { fb.innerHTML = `<div class="fb tip">Schreibe nur eine Zahl, zum Beispiel <b>−5</b> oder <b>2,5</b>. Ein Minus kannst du mit der Taste „-“ schreiben.</div>`; return; }
+    if (r.empty) { fb.innerHTML = `<div class="fb tip">${t.type === "err" ? "Wähle den Fehler aus und gib das richtige Ergebnis ein." : t.type === "cmp" ? "Wähle ein Zeichen aus." : "Gib zuerst eine Antwort ein."}</div>`; return; }
+    if (r.ok) {
+      prog[c.id] = Math.min((prog[c.id] || 0) + 1, 5); save(); updateProgress();
+      const d = document.querySelector("#main .panel:nth-of-type(3) .dots"); if (d) d.outerHTML = dots(c.id);
+      fb.innerHTML = `<div class="fb ok"><b>Richtig! 🎉</b>${done(c.id) ? "<span>Du hast das Kapitel geschafft. Übe weiter oder geh zum nächsten Kapitel.</span>" : ""}</div>`;
+      chk.disabled = true; setTimeout(() => practice(c), 1400);
+    } else {
+      tries++;
+      fb.innerHTML = tries < 2 ? `<div class="fb no"><b>Noch nicht richtig.</b><span>Schau dir den Merke-Kasten noch einmal an und versuche es nochmal. Oder klick auf „Tipp“.</span></div>`
+        : `<div class="fb no"><b>Leider falsch.</b>${solution(t)}<span>Rechne den Weg im Heft nach. Dann klick auf „Neue Aufgabe“.</span></div>`;
+      if (tries >= 2) chk.disabled = true;
+    }
+  };
+}
+
+// ---------- Probetest ----------
+let test = null;
+function renderTest() {
+  test = CH.map(c => ({ c, t: c.gen(), val: null }));
+  let h = `<section class="panel"><span class="eyebrow">Zum Schluss</span><h2>Probetest</h2><p>11 Aufgaben, eine aus jedem Kapitel. Rechne im Heft und trage die Ergebnisse ein. Klick am Ende auf „Auswerten“.</p></section><section class="panel"><div class="testlist">`;
+  test.forEach((x, i) => { h += `<div class="ttask" id="tt${i}" style="--c:${cv(x.c)}"><span class="eyebrow" style="color:var(--c)">Aufgabe ${i + 1} · Kapitel ${x.c.id}: ${x.c.title}</span><div class="qtext">${x.t.prompt}</div>${x.t.pic || ""}${taskInput(x.t, "t" + i)}<div class="tfb"></div></div>`; });
+  h += `</div><div class="row"><button type="button" id="eval">Auswerten</button><button type="button" class="ghost" id="again">Neuer Probetest</button></div><div id="result" aria-live="polite"></div></section>`;
+  document.getElementById("main").innerHTML = h;
+  test.forEach((x, i) => { const el = document.getElementById("tt" + i); el.querySelectorAll(".cmp").forEach(b => b.onclick = () => { x.val = b.dataset.v; el.querySelectorAll(".cmp").forEach(y => y.style.boxShadow = ""); b.style.boxShadow = "0 0 0 3px var(--focus)"; }); });
+  document.getElementById("again").onclick = renderTest;
+  document.getElementById("eval").onclick = () => {
+    let pts = 0; const wrong = [];
+    test.forEach((x, i) => { const el = document.getElementById("tt" + i), r = readAnswer(el, x.t, "t" + i, x.val);
+      el.classList.toggle("right", r.ok); el.classList.toggle("wrong", !r.ok);
+      el.querySelector(".tfb").innerHTML = r.ok ? `<div class="fb ok"><b>Richtig ✓</b></div>` : `<div class="fb no"><b>Falsch.</b>${solution(x.t)}</div>`;
+      if (r.ok) pts++; else wrong.push(x.c); });
+    const msg = pts >= 10 ? "Super! Du bist gut vorbereitet." : pts >= 7 ? "Gut! Übe die Kapitel unten noch einmal." : "Übe die Kapitel unten noch einmal gründlich. Frag nach, wenn etwas unklar ist.";
+    document.getElementById("result").innerHTML = `<div class="fb ${pts >= 7 ? "ok" : "no"}"><b style="font-size:1.2rem">${pts} von 11 Punkten.</b><span>${msg}</span>${wrong.length ? `<span>Das solltest du noch üben:</span><div class="row">${wrong.map(c => `<a href="#kapitel-${c.id}" class="btn" style="text-decoration:none">${c.id}. ${c.title}</a>`).join("")}</div>` : ""}</div>`;
+    document.getElementById("result").scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+}
+
+// ---------- Router ----------
+function route() {
+  const hsh = location.hash.replace("#", "");
+  const mt = hsh.match(/^kapitel-(\d+)$/);
+  if (mt && CH.find(c => c.id === +mt[1])) renderChapter(CH.find(c => c.id === +mt[1]));
+  else if (hsh === "probetest") renderTest();
+  else document.getElementById("main").innerHTML = renderStart();
+  renderNav(); window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", route);
+updateProgress(); route();
+</script>
+
+</body></html>
